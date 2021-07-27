@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .hide{
+            display: none;
+        }
+        .car{
+            background-color: blue;
+            margin: auto;
+            height: 100px;
+            width: 50px;
+            bottom: 100px;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div class="score">score</div>
+    <div class="game">
+    <div class="startscreen"> welcome message</div>
+    <div class="gamearea hide"> game area</div>
+    </div>
+
+    <script>
+        const score = document.querySelector(".score");
+        const startscreen = document.querySelector(".startscreen");
+        const gamearea = document.querySelector(".gamearea");
+
+        startscreen.addEventListener("click",start);
+        document.addEventListener("keydown",presson);
+        document.addEventListener("keyup",pressoff);
+
+        let keys = {
+            ArrowLeft:false,
+            ArrowRight:false,
+            ArrowUp:false,
+            ArrowDown:false
+        }
+        let player = {
+            speed:50
+        }
+
+        function playgame(){
+            let car = document.querySelector(".car");
+            if (player.start) {
+                if (keys.ArrowDown) {player.y += player.speed};
+                if(keys.ArrowUp) {player.y -= player.speed};
+                if(keys.ArrowLeft) {player.x -= player.speed};
+                if(keys.ArrowRight) {player.x += player.speed};
+
+                car.style.left = player.x + 'px';
+                car.style.top = player.y + 'px';
+                window.requestAnimationFrame(playgame);
+            }
+        }
+
+        function start() {
+            startscreen.classList.add("hide");
+            gamearea.classList.remove("hide");
+            player.start = true;
+
+            window.requestAnimationFrame(playgame);
+            let car = document.createElement("div");
+            car.innerText = "car";
+            car.setAttribute("class","car");
+            gamearea.appendChild(car);
+            player.x = car.offsetLeft;
+            player.y = car.offsetTop;
+        }
+        function presson(e) {
+            keys[e.key] = true;
+        }
+        function pressoff(e) {
+            keys[e.key] = false;
+        }
+    </script>
+</body>
+</html>
